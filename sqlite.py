@@ -1,33 +1,37 @@
 import sqlite3
 
+# Connect to SQLite database
+connection = sqlite3.connect("student.db")
+cursor = connection.cursor()
 
-connection=sqlite3.connect("student.db")
+# Drop table if it already exists
+cursor.execute("DROP TABLE IF EXISTS STUDENT")
 
+# Create table
+cursor.execute("""
+CREATE TABLE STUDENT (
+    NAME TEXT,
+    CLASS TEXT,
+    SECTION TEXT,
+    MARKS INTEGER
+)
+""")
 
-cursor=connection.cursor()
+# Insert sample records
+students = [
+    ("Krish", "Data Science", "A", 90),
+    ("Sudhanshu", "Data Science", "B", 100),
+    ("Darius", "Data Science", "A", 86),
+    ("Vikash", "DEVOPS", "A", 50),
+    ("Dipesh", "DEVOPS", "A", 35)
+]
 
-
-table_info="""
-Create table STUDENT(NAME VARCHAR(25),CLASS VARCHAR(25),
-SECTION VARCHAR(25),MARKS INT);
-
-"""
-cursor.execute(table_info)
-
-
-
-cursor.execute('''Insert Into STUDENT values('Krish','Data Science','A',90)''')
-cursor.execute('''Insert Into STUDENT values('Sudhanshu','Data Science','B',100)''')
-cursor.execute('''Insert Into STUDENT values('Darius','Data Science','A',86)''')
-cursor.execute('''Insert Into STUDENT values('Vikash','DEVOPS','A',50)''')
-cursor.execute('''Insert Into STUDENT values('Dipesh','DEVOPS','A',35)''')
-
-
-
-print("The isnerted records are")
-data=cursor.execute('''Select * from STUDENT''')
-for row in data:
-    print(row)
+cursor.executemany(
+    "INSERT INTO STUDENT VALUES (?, ?, ?, ?)",
+    students
+)
 
 connection.commit()
 connection.close()
+
+print("student.db created successfully with sample data.")
