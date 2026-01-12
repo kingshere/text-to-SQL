@@ -4,6 +4,11 @@ An AI-powered Text-to-SQL application that converts natural language questions i
 
 This project demonstrates practical LLM integration for database querying and serves as a foundation for agentic data-access systems.
 
+
+## 🖼️ Application Preview
+
+![TEXT-TO-SQL](./image.png)
+
 ## 🚀 Features
 
 Natural language → SQL query conversion using Google Gemini (gemini-pro)
