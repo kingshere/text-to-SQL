@@ -9,6 +9,15 @@ import sqlite3
 import streamlit as st
 import google.generativeai as genai
 
+api_key = os.getenv("GOOGLE_API_KEY")
+
+if not api_key:
+    st.error("GOOGLE_API_KEY is NOT loaded")
+    st.stop()
+else:
+    st.success("GOOGLE_API_KEY loaded")
+
+
 
 # -----------------------------------
 # Gemini Client Configuration
