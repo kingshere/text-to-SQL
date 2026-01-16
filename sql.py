@@ -7,14 +7,14 @@ load_dotenv()
 import os
 import sqlite3
 import streamlit as st
-from google import genai
+import google.generativeai as genai
+
 
 # -----------------------------------
 # Gemini Client Configuration
 # -----------------------------------
-client = genai.Client(
-    api_key=os.getenv("GOOGLE_API_KEY")
-)
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
 
 MODEL_NAME = os.getenv(
     "GEMINI_MODEL",
@@ -54,11 +54,12 @@ A: SELECT * FROM STUDENT WHERE CLASS = "Data Science";
 # Gemini → SQL Function
 # -----------------------------------
 def get_gemini_response(question, prompt):
-    response = client.models.generate_content(
-        model=MODEL_NAME,
-        contents=prompt[0] + "\n\n" + question
+    model = genai.GenerativeModel(MODEL_NAME)
+    response = model.generate_content(
+        prompt[0] + "\n\n" + question
     )
     return response.text.strip()
+
 
 # -----------------------------------
 # SQL Execution Function
