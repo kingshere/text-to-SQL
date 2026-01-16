@@ -15,10 +15,11 @@ import google.generativeai as genai
 # -----------------------------------
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-
-MODEL_NAME = os.getenv(
-    "GEMINI_MODEL",
-    "models/gemini-flash-lite-latest"  # Free-tier safe
+model = genai.GenerativeModel(
+    model_name=os.getenv(
+        "GEMINI_MODEL",
+        "models/gemini-flash-lite-latest"
+    )
 )
 
 # -----------------------------------
@@ -54,10 +55,13 @@ A: SELECT * FROM STUDENT WHERE CLASS = "Data Science";
 # Gemini → SQL Function
 # -----------------------------------
 def get_gemini_response(question, prompt):
-    model = genai.GenerativeModel(MODEL_NAME)
     response = model.generate_content(
         prompt[0] + "\n\n" + question
     )
+
+    if not response or not response.text:
+        raise ValueError("No response from Gemini")
+
     return response.text.strip()
 
 
